@@ -34,9 +34,9 @@ module Agents
             "store": "Epic",
             "publisher": "Grinding Gear Games",
             "genres": [
-              "Avanturističke",
+              "Avanturistike",
               "Besplatno za igranje",
-              "Velike internetske igre za više igrača",
+              "Velike internetske igre za više igaa",
               "Igre s ulogama"
             ],
             "status": "PATCHING"
@@ -132,7 +132,9 @@ module Agents
             if payload.to_s != memory[last_status_type]
               if "#{memory[last_status_type]}" == ''
                 payload.each do |k, v|
-                  create_event payload: k
+                  json_region = Marshal.load(Marshal.dump(k))
+                  json_region['region'] = item
+                  create_event payload: json_region
                 end
               else
                 last_status = memory[last_status_type].gsub("=>", ": ").gsub(": nil", ": null")
@@ -152,7 +154,9 @@ module Agents
                     end
                   end
                   if found == false
-                    create_event payload: k
+                    json_region = Marshal.load(Marshal.dump(k))
+                    json_region['region'] = item
+                    create_event payload: json_region
                   else
                     if interpolated['debug'] == 'true'
                       log "found is #{found}"
@@ -178,7 +182,9 @@ module Agents
                     end
                     if found == false
                       kbis['status'] = kbis['status'] + " is FINISHED"
-                      create_event payload: kbis
+                      json_region = Marshal.load(Marshal.dump(kbis))
+                      json_region['region'] = item
+                      create_event payload: json_region
                     else
                       if interpolated['debug'] == 'true'
                         log "found is #{found}"
